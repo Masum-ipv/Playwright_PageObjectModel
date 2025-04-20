@@ -1,12 +1,18 @@
 import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import * as fs from "fs";
+
+// Load .env.<env> based on custom ENV
+const ENV = process.env.ENV || "qa"; // default to staging
+const envFile = `.env.${ENV}`;
+if (fs.existsSync(envFile)) {
+  dotenv.config({ path: envFile });
+} else {
+  throw new Error(`Missing env file: ${envFile}`);
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -27,7 +33,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
+    baseURL: process.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",

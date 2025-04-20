@@ -47,7 +47,6 @@ In this project:
 
 ```bash
 git clone https://github.com/your-username/playwright-login-pom.git
-cd playwright-login-pom
 ```
 
 ### 2. Install Dependencies
@@ -59,7 +58,9 @@ npm install
 ### 3. Run Tests
 
 ```bash
-npx playwright test
+npm run test:qa -- --project=chromium --headed
+npm run test:staging -- --project=chromium --headed
+npm run test:prod -- --project=chromium --headed
 ```
 
 ### 4. View Test Results
